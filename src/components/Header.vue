@@ -11,6 +11,10 @@ export default {
 </script>
 
 <style scoped>
+.systemHeader{
+  grid-column: 1 / 33;
+  grid-row: 1 / 2;
+}
 .systemHeader h1{
     width: 100%;
     height: 100%;

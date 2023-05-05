@@ -43,32 +43,6 @@ export default {
   background-color: #d1d1d1;
 }
 
-/* 组件SystemHeader位置 */
-#app .systemHeader{
-  grid-column: 1 / 33;
-  grid-row: 1 / 2;
-}
-
-/* 组件TravelEmissionVary位置 */
-#app .timeFrequency{
-  grid-column: 1 / 17;
-  grid-row: 21 / 33;
-  background-color: #fff;
-}
-
-/* 组件Barometer样式 */
-#app .drivingStatus{
-  grid-column: 17 / 33;
-  grid-row: 21 / 33;
-  background-color: #fff;
-}
-
-#app .odMessage{
-  grid-column: 17 / 33;
-  grid-row: 2 / 21;
-  background-color: #fff;
-}
-
 /* 同rem设置字号，用em设置其他属性 */
 :root{
   font-size: 1em;
