@@ -49,20 +49,6 @@ export default {
   grid-row: 1 / 2;
 }
 
-/* 组件ControlPanel位置 */
-#app .controlPanel{
-  grid-column: 1 / 4;
-  grid-row: 2 / 21;
-  background-color: #fff;
-}
-
-/* 组件Map位置 */
-#app .map{
-  grid-column: 4 / 17;
-  grid-row: 2 / 21;
-  background-color: #fff;
-}
-
 /* 组件TravelEmissionVary位置 */
 #app .timeFrequency{
   grid-column: 1 / 17;
