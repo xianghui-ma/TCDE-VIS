@@ -15,7 +15,7 @@
             <el-switch style="padding-left: 30%" v-model="showHeatmap" active-color="#13ce66" inactive-color="#aaa"></el-switch>
             <p>Select Travel Type:</p>
             <el-select size="mini" v-model="selectedType" placeholder="Travel Type">
-                <el-option v-for="item in leftColTravel.concat(rightColTravel)" :key="item.type" :label="item.type" :value="item.type"></el-option>
+                <el-option v-for="item in travels" :key="item.type" :label="item.type" :value="item.type"></el-option>
             </el-select>
             <p>OD Heatmap Accuracy:</p>
             <el-slider v-model="accuracy" :min="50" :max="500" :step="50"></el-slider>
@@ -36,9 +36,14 @@
 </template>
 
 <script>
+import {mapGetters, mapState} from 'vuex';
 
 export default {
     name: 'ControlPanel',
+    computed: {
+        ...mapGetters('publicData', ['travels']),
+        ...mapState('publicData', ['leftColTravel', 'rightColTravel'])
+    },
     data(){
         return {
             date: '',
@@ -46,8 +51,6 @@ export default {
             showHeatmap: true,
             selectedType: '',
             accuracy: 200,
-            leftColTravel: [{type: 'Traffic', color: '#a6cee3'}, {type: 'Dining', color: '#ff7f00'}, {type: 'Pastime', color: '#b2df8a'}, {type: 'Hotel', color: '#1f78b4'}, {type: 'Work', color: '#6a3d9a'}],
-            rightColTravel: [{type: 'Shop', color: '#fb9a99'}, {type: 'Service', color: '#e31a1c'}, {type: 'Medical', color: '#fdbf6f'}, {type: 'Home', color: '#cab2d6'}, {type: 'School', color: '#33a02c'}],
         };
     }
 }
@@ -59,6 +62,9 @@ export default {
     grid-row: 2 / 21;
     background-color: #fff;
     padding: 0em 0.5em 0em 0.5em;
+}
+.controlPanel .el-divider{
+    margin: 1.2em 0 1.2em 0;
 }
 .controlPanel .el-divider__text{
     font-weight: 600;

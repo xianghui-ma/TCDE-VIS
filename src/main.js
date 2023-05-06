@@ -2,6 +2,8 @@ import Vue from 'vue';
 import App from './App.vue';
 import { Divider, DatePicker, TimeSelect, TimePicker, Switch, Select, Option, Slider } from 'element-ui';
 
+import store from './store/index.js';
+
 Vue.use(Divider);
 Vue.use(DatePicker);
 Vue.use(TimeSelect);
@@ -16,4 +18,5 @@ Vue.config.productionTip = false;
 
 new Vue({
   render: h => h(App),
+  store
 }).$mount('#app');
