@@ -5,12 +5,13 @@
 <script>
 import * as d3 from 'd3';
 import axios from 'axios';
-import {mapGetters} from 'vuex';
+import {mapGetters, mapState} from 'vuex';
 
 export default {
     name: 'TimeFrequency',
     computed: {
         ...mapGetters('publicData', ['travelType']),
+        ...mapState('publicData', ['urlPrefix']),
     },
     data(){
         return {
@@ -150,8 +151,8 @@ export default {
         // 开始绘制
         async drawGraph(){
             this.drawGrid();
-            let frequencyOfTravel = await axios.get('http://localhost:8081/frequencyOfTravel.json');
-            let emissionOfTravel = await axios.get('http://localhost:8081/emissionOfTravel.json');
+            let frequencyOfTravel = await axios.get(`${this.urlPrefix}frequencyOfTravel.json`);
+            let emissionOfTravel = await axios.get(`${this.urlPrefix}emissionOfTravel.json`);
             frequencyOfTravel = frequencyOfTravel.data;
             emissionOfTravel = emissionOfTravel.data;
             this.cellArr.forEach((item, index)=>{
