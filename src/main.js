@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import App from './App.vue';
-import { Divider, DatePicker, TimeSelect, TimePicker, Switch, Select, Option, Slider } from 'element-ui';
+import { Divider, DatePicker, TimeSelect, TimePicker, Switch, Select, Option, Slider, Button } from 'element-ui';
 
 import store from './store/index.js';
 
@@ -12,6 +12,7 @@ Vue.use(Switch);
 Vue.use(Select);
 Vue.use(Option);
 Vue.use(Slider);
+Vue.use(Button);
 
 Vue.config.productionTip = false;
 

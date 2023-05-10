@@ -2,6 +2,7 @@ import Vue from "vue";
 import Vuex from 'vuex';
 
 import publicData from "./publicData.js";
+import mapData from "./map.js";
 
 Vue.use(Vuex);
 
@@ -9,5 +10,6 @@ Vue.use(Vuex);
 export default new Vuex.Store({
     modules: {
         publicData,
+        mapData
     }
 });

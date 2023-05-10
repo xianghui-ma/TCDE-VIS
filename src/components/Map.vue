@@ -5,12 +5,16 @@
 <script>
 import L from 'leaflet';
 import {DrawAreaSelection} from '@bopen/leaflet-area-selection';
+import {mapState} from 'vuex';
 
 import "leaflet/dist/leaflet.css";
 import '@bopen/leaflet-area-selection/dist/index.css';
 
 export default {
     name: 'Map',
+    computed: {
+        ...mapState('publicData', ['serverPrefix']),
+    },
     data(){
         return {
             mapContainerId: 'mapContainer',
@@ -86,12 +90,13 @@ export default {
                     L.DomEvent.on(searchButton, 'click', ()=>{
                         axios({
                             method: 'post',
-                            url: 'http://localhost:5000/odPathSearch',
+                            url: `${this.serverPrefix}odPathSearch`,
                             data: {
                                 startArea: this.searchArea[0],
                                 endArea: this.searchArea[1]
                             }
                         }).then((response)=>{
+                            
                             // pubsub.publish('odMes', response.data);
                         });
                     });
