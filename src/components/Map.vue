@@ -5,7 +5,9 @@
 <script>
 import L from 'leaflet';
 import {DrawAreaSelection} from '@bopen/leaflet-area-selection';
-import {mapState} from 'vuex';
+import {mapState, mapActions} from 'vuex';
+import axios from 'axios';
+import * as d3 from 'd3';
 
 import "leaflet/dist/leaflet.css";
 import '@bopen/leaflet-area-selection/dist/index.css';
@@ -13,20 +15,21 @@ import '@bopen/leaflet-area-selection/dist/index.css';
 export default {
     name: 'Map',
     computed: {
-        ...mapState('publicData', ['serverPrefix']),
+        ...mapState('publicData', ['serverPrefix', 'urlPrefix']),
+        ...mapState('mapData', ['map']),
     },
     data(){
         return {
             mapContainerId: 'mapContainer',
-            map: null,
             searchArea: [],
             selectedAreaLayer: []
         };
     },
     methods: {
+        ...mapActions('mapData', ['storeOdMes', 'storeMap', 'storeHeatMap']),
         // 加载地图
         loadMap(){
-            this.map = L.map(this.mapContainerId).setView([28.676493, 115.892151], 13);
+            this.storeMap(L.map(this.mapContainerId).setView([28.676493, 115.892151], 13));
             L.tileLayer('https://api.mapbox.com/styles/v1/smallma/clb4twadj000w15mmqu5b8c5f/tiles/256/{z}/{x}/{y}?access_token=pk.eyJ1Ijoic21hbGxtYSIsImEiOiJja3lxeTRwdGUwaHpnMnV0Z2puN3hqY2Y4In0.JPUf6RG-a2zrvBVsyKLAFA', {
                 attribution: '&copy; <a href="https://www.mapbox.com/">mapbox</>'
             }).addTo(this.map);
@@ -96,8 +99,8 @@ export default {
                                 endArea: this.searchArea[1]
                             }
                         }).then((response)=>{
-                            
-                            // pubsub.publish('odMes', response.data);
+                            console.log(response.data);
+                            this.storeOdMes(response.data);
                         });
                     });
                     return searchButton;
@@ -107,6 +110,24 @@ export default {
                 return new L.Control.SearchButton(opts);
             }
             L.control.searchButton({ position: 'topleft' }).addTo(this.map);
+        },
+        // 添加OD热力图层
+        async addHeatmap(){
+            let heatmap = await axios.get(`${this.urlPrefix}heatmap.json`);
+            heatmap = heatmap.data;
+            // 定义颜色比例尺
+            let colorScale = d3.scaleLinear().domain([1, heatmap.max]).range(['#FFFFFF', '#902752']);
+            // 添加热力图层
+            let odHeatmapLayer = L.geoJSON(heatmap.geo, {
+                style: (feature)=>{
+                    return {
+                        fillColor : colorScale(feature.properties.count),
+                        fillOpacity: 0.8,
+                        weight: 0
+                    }
+                }
+            }).addTo(this.map);
+            this.storeHeatMap(odHeatmapLayer);
         },
         clearSelectedAreaLayer(){
             this.selectedAreaLayer.forEach((item)=>{
@@ -121,6 +142,7 @@ export default {
         this.addBrushButton();
         this.addDeleteButton();
         this.addSearchButton();
+        this.addHeatmap();
     }
 }
 </script>

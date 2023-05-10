@@ -12,7 +12,7 @@
         <el-divider content-position="center">OD&nbsp;Heatmap</el-divider>
         <section class='heatmapControl'>
             <p>Hidden/Show Layer:</p>
-            <el-switch style="padding-left: 30%" v-model="showHeatmap" active-color="#13ce66" inactive-color="#aaa"></el-switch>
+            <el-switch style="padding-left: 30%" v-model="showHeatmap" active-color="#13ce66" inactive-color="#aaa" change="isShowOdLayer"></el-switch>
             <p>Select Travel Type:</p>
             <el-select size="mini" v-model="selectedType" placeholder="Travel Type">
                 <el-option v-for="item in travels" :key="item.type" :label="item.type" :value="item.type"></el-option>
@@ -42,7 +42,8 @@ export default {
     name: 'ControlPanel',
     computed: {
         ...mapGetters('publicData', ['travels']),
-        ...mapState('publicData', ['leftColTravel', 'rightColTravel'])
+        ...mapState('publicData', ['leftColTravel', 'rightColTravel']),
+        ...mapState('mapData', ['map', 'heatMap'])
     },
     data(){
         return {
@@ -52,6 +53,12 @@ export default {
             selectedType: '',
             accuracy: 200,
         };
+    },
+    methods: {
+        isShowOdLayer(checked){
+            console.log(checked);
+            checked ? this.map.addLayer(this.heatMap) : this.map.removeLayer(this.heatMap);
+        }
     }
 }
 </script>
