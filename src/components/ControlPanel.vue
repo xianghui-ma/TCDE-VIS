@@ -2,23 +2,23 @@
 <section class="controlPanel">
     <section class='dateBox'>
         <el-divider content-position="center">Select&nbsp;Date</el-divider>
-        <el-date-picker v-model="date" size="mini" type="date" placeholder="Select Date"></el-date-picker>
+        <el-date-picker v-model="date" size="mini" type="date" placeholder="Select Date" value-format="yyyy/MM/dd" @change="storeDate"></el-date-picker>
     </section>
     <section class='hourBox'>
         <el-divider content-position="center">Select&nbsp;Time</el-divider>
-        <el-time-picker v-model="time" size="mini" is-range range-separator="-" start-placeholder="Start" end-placeholder="End"></el-time-picker>
+        <el-time-picker @change="storeTime" value-format="yyyy/MM/dd-HH/MM/ss" v-model="time" size="mini" is-range range-separator="-" start-placeholder="Start" end-placeholder="End"></el-time-picker>
     </section>
     <section class='odHeatmap'>
         <el-divider content-position="center">OD&nbsp;Heatmap</el-divider>
         <section class='heatmapControl'>
             <p>Hidden/Show Layer:</p>
-            <el-switch style="padding-left: 30%" v-model="showHeatmap" active-color="#13ce66" inactive-color="#aaa" change="isShowOdLayer"></el-switch>
+            <el-switch style="padding-left: 30%" v-model="showHeatmap" active-color="#13ce66" inactive-color="#aaa" @change="isShowOdLayer"></el-switch>
             <p>Select Travel Type:</p>
-            <el-select size="mini" v-model="selectedType" placeholder="Travel Type">
+            <el-select size="mini" v-model="selectedType" placeholder="Travel Type" @change="storeSelectedTrip">
                 <el-option v-for="item in travels" :key="item.type" :label="item.type" :value="item.type"></el-option>
             </el-select>
             <p>OD Heatmap Accuracy:</p>
-            <el-slider v-model="accuracy" :min="50" :max="500" :step="50"></el-slider>
+            <el-slider v-model="accuracy" :min="50" :max="500" :step="50" @change="storeaccuracy"></el-slider>
         </section>
     </section>
     <section class='travelBox'>
@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import {mapGetters, mapState} from 'vuex';
+import {mapGetters, mapState, mapActions} from 'vuex';
 
 export default {
     name: 'ControlPanel',
@@ -55,9 +55,12 @@ export default {
         };
     },
     methods: {
+        ...mapActions('controlData', ['storeDate', 'storeTime', 'storeSelectedTrip', 'storeaccuracy']),
         isShowOdLayer(checked){
-            console.log(checked);
             checked ? this.map.addLayer(this.heatMap) : this.map.removeLayer(this.heatMap);
+        },
+        getA(time){
+            console.log(time);
         }
     }
 }
